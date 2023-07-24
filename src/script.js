@@ -25,7 +25,7 @@ function showContent(index = 1) {
 }
 
 hideContent()
-showContent(localStorage.getItem("tabNumber") || 0)
+showContent(localStorage.getItem("tabNumber") || 1)
 
 // ------------------------ Modal actions --------------------------
 
@@ -81,6 +81,15 @@ $("#signin").addEventListener("click", (e) => {
 
     signIn(signInForm)
         .then((resp) => resp.json())
-        .then((data) => console.log(data))
-        .catch((err) => console.log(err.message))
+        .then((data) => {
+            $(".loader_wrapper").classList.remove("hidden")
+            $(".loader_wrapper").classList.add("grid")
+            if (data.statusCode == 400) {
+                alert("error")
+            } else {
+                window.location.href = "./post.html"
+            }
+        })
+        .catch((err) => err.message)
+        .finally($(".loader_wrapper").classList.add("hidden"))
 })
